@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Homework ex 2</title>
+  </head>
+  <body>
+
+    <div class="container">
+        <h2>Welcome!</h2> 
+        <form th:action="@{/login}" method="post"><br/>
+            <input type="text" id="username" name="username" th:placeholder="Username" class="form-control"/> <br/>
+                <h4 style="color: red">Login unsuccessful.</h4>
+            </div>
+            <button class="btn btn-md btn-success btn-block" name="Submit" value="Login" type="Submit">Log in</button> 
+        </form>      
+        
+        <form th:action="@{/signup}" method="get"><br/>
+            <button class="btn btn-md btn-success btn-block" type="Submit">Sign Up!</button> 
+    </form>
+        
+    </div>
+
+    <script>
+
+
+
+    var UsernameInList = true;
+
+    var canILogin = new Promise(
+        function (resolve, reject) {
+            if (UsernameInList) {
+                var login = {
+                    username: 'sydneyusername'
+                };
+                resolve(login);
+            } else {
+                var reason = new Error('Username does not exist');
+                reject(reason);
+            }
+
+        }
+    );
+
+//2:36:57
+    fetch('https://jsonplaceholder.typicode.com/posts', {
+      method: 'POST',
+      body: JSON.stringify({
+        id: 1,
+        title: 'Title',
+        body: 'Body',
+        userId: 1
+      }),
+      headers{
+        "Content-type": "application/json; charset=UTF-8"
+      }
+    })
+    .then(response => response.json())
+    .then(json => console.log(json))
+
+    // output
+    {
+      id: 1,
+      title: 'Title',
+      body: 'Body',
+      userId: 1
+    }
+
+let postPromise = fetch('https://jsonplaceholder.typicode.com/posts')
+   .then(function(response) {
+       return response.json();
+    });
+
+let userPromise = fetch('https://jsonplaceholder.typicode.com/users')
+   .then(function(response) {
+      return response.json();
+   });
+
+   Promise.all([postPromise, userPromise]).then((response)=> {
+      let posts = response[0];
+      let users = response[1];
+      let foundUser = users.find((user)=>{
+        return user.username[0] == "C";
+      })
+      let filteredArr = posts.filter((post)=>{
+        return post.userId === foundUser.id;
+      })
+      console.log(filteredArr);
+    })
+
+
+</script>
+
+
+
+  </body>
+</html>
